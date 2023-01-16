@@ -139,15 +139,15 @@ checkbox2.addEventListener("change", function() {
 
 
 function sendData(){
-    let firstCropArray=[[(firstImageCropX) , (firstImageCropY) ],
-    [(firstImageCropX), (firstImageCropY+firstImageCropHeight)],
-    [(firstImageCropX+firstImageCropWidth) , (firstImageCropY) ],
-    [(firstImageCropX+firstImageCropWidth), (firstImageCropY+firstImageCropHeight) ]
+    let firstCropArray=[[(firstImageCropY) , (firstImageCropX)  ],
+    [ (firstImageCropY+firstImageCropHeight) , (firstImageCropX)],
+    [(firstImageCropY),(firstImageCropX+firstImageCropWidth)  ],
+    [(firstImageCropY+firstImageCropHeight) , (firstImageCropX+firstImageCropWidth) ]
     ]
-    let secondCropArray=[[secondImageCropX , secondImageCropY],
-    [secondImageCropX , secondImageCropY+secondImageCropHeight],
-    [secondImageCropX+secondImageCropWidth , secondImageCropY],
-    [secondImageCropX+secondImageCropWidth , secondImageCropY+secondImageCropHeight]
+    let secondCropArray=[[secondImageCropY , secondImageCropX],
+    [ secondImageCropY+secondImageCropHeight , secondImageCropX],
+    [secondImageCropY , secondImageCropX+secondImageCropWidth ],
+    [secondImageCropY+secondImageCropHeight , secondImageCropX+secondImageCropWidth]
     ]
     console.log(firstCropArray,secondCropArray)
 fetch('http://127.0.0.1:5000/post', {

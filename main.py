@@ -11,7 +11,7 @@ import functions as fn
 app = Flask(__name__)
 UPLOAD_FOLDER = "./static/images"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-app.secret_key = 'sdef2222ddfwr1rbd2w235Y5@56I7'
+app.secret_key = 'sdef2222ddfwr1rbd2w235Y51@56I7'
 app.config['SESSION_TYPE'] = 'filesystem'
 
 @app.route("/",methods=['GET','POST'])
@@ -27,15 +27,24 @@ def index():
     if session.get('path') is not None:
         path = session['path'] 
         path_2 = session['path_2'] 
+    else:
+        path = "./static/images/uniform.jpeg"
+        path_2 = "./static/images/uniform.jpeg"
     if session.get('output') is not None:
         output = session['output']
+    # print("hereee", session['first_image_is_phase'],session['hp_checked'])
+    
     return render_template('index.html',path_to_first_pic=global_first_path,path_to_second_pic=global_second_path, phase_image= path, magnitude_image= path_2,output_image= output)
 
 @app.route("/post",methods=['GET', 'POST'])
 def post():
+    hp_checked  = 1
+    first_image_is_phase = 1
+    session['hp_checked'] = 1
+    session['first_image_is_phase'] = 0
     global_first_path="./static/images/uniform.jpeg"
     global_second_path = "./static/images/uniform.jpeg"
-    first_image_is_phase = 1
+
     if request.method == 'POST':
         if 'file1' in request.files:
             file1 = request.files['file1']
@@ -57,15 +66,27 @@ def post():
             hpBool = request.get_json("hpBool")
             hp_checked = hpBool['hpBool']
             session['hp_checked'] = hp_checked
+            hp_checked=session['hp_checked']
+
         except:
              hp_checked=session['hp_checked']
         try:
             phaseBool = request.get_json("phaseBool")
             first_image_is_phase= phaseBool['phaseBool']
             session['first_image_is_phase'] = first_image_is_phase
+            first_image_is_phase = session['first_image_is_phase']
+            print("phase try ")
+
+            print(first_image_is_phase)
+
 
         except:
+
             first_image_is_phase = session['first_image_is_phase']
+            print("phase except ")
+
+            print(first_image_is_phase)
+
     
         try:
             firstData = request.get_json("firstData")
@@ -104,9 +125,10 @@ def post():
         images = preprocessingImages(global_first_path, global_second_path)
         images.resizedImage()
         image1 , image2 = images.get_resized_image()
-        img1 = Processing(image1 , final_first_crop_array , first_image_is_phase , hp_checked)
-        img2 = Processing(image2 , final_second_crop_array  , not first_image_is_phase  , hp_checked)
-        print(final_first_crop_array, final_second_crop_array)
+
+        img1 = Processing(image1 , [[0,0],[650,433]] , 0 , 1)
+        img2 = Processing(image2 , [[0,0],[650,433]]  , 1 , 1)
+        # print("YARABBBBBB",session['first_image_is_phase'] )
         path , data1 = img1.Edit_Signal()
         path_2 , data2 = img2.Edit_Signal()
         session['path'] = path
