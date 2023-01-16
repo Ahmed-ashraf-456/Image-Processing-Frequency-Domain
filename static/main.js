@@ -28,6 +28,7 @@ let firstCropper = new Cropper(firstImage, {
     guides: false,
     movable:false,
     center:false,
+    autoCropArea:1,
      crop(event){
         firstImageCropX = parseInt(event.detail.x);
         firstImageCropY = parseInt(event.detail.y);
@@ -52,6 +53,8 @@ function secondCrop(){
         guides: false,
         movable:false,
         center:false,
+    autoCropArea:1,
+
          crop(event){
             secondImageCropX = parseInt(event.detail.x);
             secondImageCropY = parseInt(event.detail.y);

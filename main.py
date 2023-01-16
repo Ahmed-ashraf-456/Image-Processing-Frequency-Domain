@@ -33,15 +33,15 @@ def index():
     if session.get('output') is not None:
         output = session['output']
     # print("hereee", session['first_image_is_phase'],session['hp_checked'])
-    
+    # print(path,path_2)
     return render_template('index.html',path_to_first_pic=global_first_path,path_to_second_pic=global_second_path, phase_image= path, magnitude_image= path_2,output_image= output)
 
 @app.route("/post",methods=['GET', 'POST'])
 def post():
     hp_checked  = 1
     first_image_is_phase = 1
-    session['hp_checked'] = 1
-    session['first_image_is_phase'] = 0
+    # session['hp_checked'] = 1
+    # session['first_image_is_phase'] = 0
     global_first_path="./static/images/uniform.jpeg"
     global_second_path = "./static/images/uniform.jpeg"
 
@@ -76,7 +76,6 @@ def post():
             session['first_image_is_phase'] = first_image_is_phase
             first_image_is_phase = session['first_image_is_phase']
             print("phase try ")
-
             print(first_image_is_phase)
 
 
@@ -121,19 +120,22 @@ def post():
         if session.get('final_first_crop_array') is not None:
             final_first_crop_array = session['final_first_crop_array']
             final_second_crop_array = session['final_second_crop_array']
-            
+
+        print("GLOBALSSS", global_first_path,global_second_path)   
         images = preprocessingImages(global_first_path, global_second_path)
         images.resizedImage()
         image1 , image2 = images.get_resized_image()
 
-        img1 = Processing(image1 , [[0,0],[650,433]] , 0 , 1)
-        img2 = Processing(image2 , [[0,0],[650,433]]  , 1 , 1)
+        img1 = Processing(image1 , final_first_crop_array , first_image_is_phase , hp_checked)
+        img2 = Processing(image2 , final_second_crop_array  , int(not first_image_is_phase) , hp_checked)
         # print("YARABBBBBB",session['first_image_is_phase'] )
         path , data1 = img1.Edit_Signal()
         path_2 , data2 = img2.Edit_Signal()
         session['path'] = path
         session['path_2'] = path_2
-        final =After_Processing(data1 , data2 , 1).Inverse_Fourier_Transform()
+        print("phaseee", first_image_is_phase)   
+        print(final_first_crop_array,final_second_crop_array)
+        final =After_Processing(data1 , data2 , first_image_is_phase).Inverse_Fourier_Transform()
         plt.imsave("static/images/imag_final.jpg" , final , cmap = 'gray')
         session['output']= "static/images/imag_final.jpg"
         return redirect("/")
