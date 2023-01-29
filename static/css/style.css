@@ -171,6 +171,7 @@ html,body{
 }
 
 #result_img1{
+    max-width: 100%;
     top:130px;
 }
 
@@ -397,5 +398,8 @@ span{
     font-weight: bold;
 }
 
-
+.cropper-view-box{
+    position: relative;
+    top: -1px
+}
 

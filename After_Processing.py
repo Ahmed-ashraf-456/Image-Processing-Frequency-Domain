@@ -6,17 +6,17 @@ class After_Processing():
         self.Arr_2 = Arr_2
         self.mode = mode
 
-    def __compination(self):
+    def __combination(self):
 
         if  self.mode:
-            compined_images = np.multiply( self.Arr_2, np.exp(1j *  self.Arr_1))
+            combined_images = np.multiply( self.Arr_2, np.exp(1j *  self.Arr_1))
         
         else:
-            compined_images = np.multiply( self.Arr_1, np.exp(1j *  self.Arr_2))
+            combined_images = np.multiply( self.Arr_1, np.exp(1j *  self.Arr_2))
 
-        return compined_images
+        return combined_images
     
     def Inverse_Fourier_Transform (self):
-        image_compined = np.abs(np.fft.ifft2(np.fft.ifftshift(After_Processing.__compination(self))))
-        return image_compined
+        image_combined = np.abs(np.fft.ifft2(np.fft.ifftshift(After_Processing.__combination(self))))
+        return image_combined
         

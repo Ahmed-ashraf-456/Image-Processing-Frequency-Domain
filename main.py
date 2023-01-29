@@ -22,8 +22,9 @@ def index():
     path = "./static/images/uniform.jpeg"
     path_2 = "./static/images/uniform.jpeg"
     if session.get('global_second_path') is not None:
-        global_first_path = session['global_first_path']
         global_second_path = session['global_second_path']
+    if session.get('global_first_path') is not None:
+        global_first_path = session['global_first_path']
     if session.get('path') is not None:
         path = session['path'] 
         path_2 = session['path_2'] 
@@ -32,16 +33,19 @@ def index():
         path_2 = "./static/images/uniform.jpeg"
     if session.get('output') is not None:
         output = session['output']
-    # print("hereee", session['first_image_is_phase'],session['hp_checked'])
-    # print(path,path_2)
+
     return render_template('index.html',path_to_first_pic=global_first_path,path_to_second_pic=global_second_path, phase_image= path, magnitude_image= path_2,output_image= output)
 
 @app.route("/post",methods=['GET', 'POST'])
 def post():
     hp_checked  = 1
     first_image_is_phase = 1
-    # session['hp_checked'] = 1
-    # session['first_image_is_phase'] = 0
+
+    if session.get('hp_checked') is None:
+        session['hp_checked'] = 1
+    if session.get('first_image_is_phase') is None:
+        session['first_image_is_phase'] = 0
+    
     global_first_path="./static/images/uniform.jpeg"
     global_second_path = "./static/images/uniform.jpeg"
 
